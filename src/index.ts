@@ -39,12 +39,11 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
   return allItems.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 }
 
-// TODO
-// [ ] add build time
-// [ ] add config file
 (async () => {
+  console.log("Building feed...\n")
+  console.time('build time');
+
   let feeds_json = await fs.promises.readFile('config/feeds.json', 'utf-8');
-  // add this to config file
   let timezone = "America/Sao_Paulo"
   let dateFormat = 'dd/MM/yyyy';
 
@@ -86,6 +85,8 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
   const renderedTemplate2 = nunjucks.renderString(template2, { items: feedsByCategory });
   fs.writeFileSync('public/feeds.html', renderedTemplate2);
 
-  process.exit()
+  console.log()
+  console.timeEnd('build time');
 
+  process.exit()
 })();
