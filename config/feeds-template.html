@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed Items</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+	<h2 class="navbar-title">Feeds</h2>
+            <ul class="navbar-links">
+                <li><a href="index.html">Latest</a></li>
+                <li><a href="feeds.html">Feeds</a></li>
+            </ul>
+        </div>
+    </nav>
+    <h1>Feeds</h1>
+    <div class="centralized-categories">
+        {% for category, feeds in items %}
+            <p class="category-title">{{ category }}</p>
+            <ul>
+                {% for feed in feeds %}
+		<details>
+	          <summary>
+		      <span class="feed-title">{{ feed.title }}</span>
+	          </summary>
+                    {% for item in feed.items %}
+                        <li>
+	  		    <a class="post-title" href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+			    <p class="gray-link">{{ item.link }}</p>
+			    <p class="bold">{{ item.formattedDate }}</p>
+                        </li>
+                    {% endfor %}
+		</details>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "dev": [
+    "https://hacks.mozilla.org/feed/",
+    "https://alistapart.com/main/feed/",
+    "https://joy.recurse.com/feed.atom",
+    "https://nullderef.com/index.xml",
+    "https://www.haskellforall.com/feeds/posts/default",
+    "https://hirrolot.github.io/rss.xml",
+    "https://lobste.rs/rss",
+    "https://journal.stuffwithstuff.com/rss.xml",
+    "https://bitbashing.io/feed.xml",
+    "https://beej.us/blog/rss.xml",
+    "https://www.allthingsdistributed.com/atom.xml",
+    "https://jvns.ca/atom.xml",
+    "https://borretti.me/feed.xml",
+    "https://xnacly.me/index.xml",
+    "https://www.noghartt.dev/rss.xml",
+    "https://apieceofthepi.substack.com/feed.xml",
+    "https://www.devever.net/~hl/cat=computing.feed",
+    "https://graydon2.dreamwidth.org/data/rss",
+    "http://www.righto.com/feeds/posts/default",
+    "https://lwn.net/headlines/rss",
+    "http://feeds.feedburner.com/martinkl",
+    "https://matklad.github.io/feed.xml",
+    "https://two-wrongs.com/feed",
+    "https://bartoszmilewski.com/feed/",
+    "https://bytecellar.com/feed/",
+    "https://compiler.club/index.xml",
+    "https://computer.rip/rss.xml",
+    "https://lethain.com/feeds",
+    "https://muratbuffalo.blogspot.com/feeds/posts/default?alt=rss",
+    "https://notes.eatonphil.com/rss.xml",
+    "https://quantum5.ca/feed.xml",
+    "https://xeiaso.net/blog.rss"
+  ],
+  "math": [
+    "https://lawrencecpaulson.github.io/feed.xml",
+    "https://thepalindrome.org/feed",
+    "https://logic-forall.blogspot.com/feeds/posts/default"
+  ],
+  "hardware": [
+     "https://chipsandcheese.com/feed/"
+  ],
+  "news": [
+    "https://hnrss.org/frontpage"
+  ]
+}
