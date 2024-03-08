@@ -6,6 +6,11 @@ import nunjucks from 'nunjucks';
 const parser = new Parser();
 nunjucks.configure({ autoescape: true });
 
+type Config = {
+  dateFormat: string,
+  debug: boolean
+}
+
 type FeedItem = {
   title: string,
   link: string,
@@ -44,7 +49,8 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
   console.time('build time');
 
   let feeds_json = await fs.promises.readFile('config/feeds.json', 'utf-8');
-  let dateFormat = 'MM/dd/yyyy';
+
+  let config: Config = JSON.parse(fs.readFileSync('config/configs.json', 'utf-8'))
 
   const urlsByCategory: { [key: string]: string[] } = JSON.parse(feeds_json);
   const allFeeds: Promise<Feed[] | null>[] = 
@@ -54,12 +60,12 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
           const feedData = await parser.parseURL(url);
           return { 
 	    title: feedData.title || '',
-	    items: mapToFeedItems(feedData, dateFormat), 
+	    items: mapToFeedItems(feedData, config.dateFormat), 
 	    category
 	  };
 	} catch (error) {
 	    console.error(`Error fetching feed at URL: ${url}`);
-	    console.log(error)
+	    config.debug ? console.error(error) : null
 	    return null;
 	}
       });
