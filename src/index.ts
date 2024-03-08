@@ -20,10 +20,10 @@ type Feed = {
   category: string
 }
 
-const mapToFeedItems = (input: any, timezone: string, dateFormat: string): FeedItem[] => {
+const mapToFeedItems = (input: any, dateFormat: string): FeedItem[] => {
   return input.items.map((item: any) => {
     const pubDate = item.isoDate || item.pubDate;
-    const date = DateTime.fromISO(pubDate, { zone: timezone });
+    const date = DateTime.fromISO(pubDate);
     return {
       title: item.title.trim(),
       link: item.link,
@@ -44,8 +44,7 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
   console.time('build time');
 
   let feeds_json = await fs.promises.readFile('config/feeds.json', 'utf-8');
-  let timezone = "America/Sao_Paulo"
-  let dateFormat = 'dd/MM/yyyy';
+  let dateFormat = 'MM/dd/yyyy';
 
   const urlsByCategory: { [key: string]: string[] } = JSON.parse(feeds_json);
   const allFeeds: Promise<Feed[] | null>[] = 
@@ -55,11 +54,12 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
           const feedData = await parser.parseURL(url);
           return { 
 	    title: feedData.title || '',
-	    items: mapToFeedItems(feedData, timezone, dateFormat), 
+	    items: mapToFeedItems(feedData, dateFormat), 
 	    category
 	  };
 	} catch (error) {
 	    console.error(`Error fetching feed at URL: ${url}`);
+	    console.log(error)
 	    return null;
 	}
       });
