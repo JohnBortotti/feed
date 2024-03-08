@@ -3,7 +3,6 @@ import fs from 'fs';
 import { DateTime } from 'luxon';
 import nunjucks from 'nunjucks';
 
-const parser = new Parser();
 nunjucks.configure({ autoescape: true });
 
 type Config = {
@@ -49,8 +48,9 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
   console.time('build time');
 
   let feeds_json = await fs.promises.readFile('config/feeds.json', 'utf-8');
-
   let config: Config = JSON.parse(fs.readFileSync('config/configs.json', 'utf-8'))
+
+  const parser = new Parser();
 
   const urlsByCategory: { [key: string]: string[] } = JSON.parse(feeds_json);
   const allFeeds: Promise<Feed[] | null>[] = 
