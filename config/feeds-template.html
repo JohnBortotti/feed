@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feeds</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-	<h2 class="navbar-title">Feeds</h2>
-            <ul class="navbar-links">
-                <li><a href="index.html">Latest</a></li>
-                <li><a href="feeds.html">Feeds</a></li>
-            </ul>
-        </div>
+  </head>
+  <body>
+    <nav>
+      <div>
+        <ul>
+          <li><a href="index.html">latest</a></li>
+          <li><a href="feeds.html">feeds</a></li>
+        </ul>
+      </div>
     </nav>
     <h1>Feeds</h1>
-    <div class="centralized-categories">
-        {% for category, feeds in items %}
-            <p class="category-title">{{ category }}</p>
-            <ul>
-                {% for feed in feeds %}
-		<details>
-	          <summary>
-		      <span class="feed-title">{{ feed.title }}</span>
-	          </summary>
-                    {% for item in feed.items %}
-                        <li>
-	  		    <a class="post-title" href="{{ item.link }}" target="_blank">{{ item.title }}</a>
-			    <p class="gray-link">{{ item.link }}</p>
-			    <p class="bold">{{ item.formattedDate }}</p>
-                        </li>
-                    {% endfor %}
-		</details>
-                {% endfor %}
-            </ul>
-        {% endfor %}
+    <div>
+      {% for category, feeds in items %}
+      <details>
+        <summary style="cursor:pointer">
+          <span>{{ category }}</span>
+        </summary>
+        <ul>
+          {% for feed in feeds %}
+          <details>
+            <summary style="cursor:pointer">
+              <span>{{ feed.title }}</span>
+            </summary>
+            <br/>
+            {% for item in feed.items %}
+            <li>
+              <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+              <p>{{ item.link }}</p>
+              <p>{{ item.formattedDate }}</p>
+            </li>
+            {% endfor %}
+          </details>
+          {% endfor %}
+        </ul>
+      </details>
+      {% endfor %}
     </div>
-</body>
+  </body>
 </html>
