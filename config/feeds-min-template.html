@@ -16,7 +16,7 @@
     </nav>
     <h1>Feeds</h1>
     <div>
-      {% for category, feeds in items %}
+      {% for category, feeds in items.feedsByCategory %}
       <details>
         <summary style="cursor:pointer">
           <span>{{ category }}</span>

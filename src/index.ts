@@ -24,6 +24,11 @@ type Feed = {
   category: string
 }
 
+type ResultData = {
+  latestPosts: FeedItem[],
+  feedsByCategory: Map<string, Feed[]>
+}
+
 const mapToFeedItems = (input: any, dateFormat: string): FeedItem[] => {
   return input.items.map((item: any) => {
     const pubDate = item.isoDate || item.pubDate;
@@ -44,15 +49,26 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
 }
 
 (async () => {
-  console.log("Building feed...\n")
-  console.time('build time');
+  const args = process.argv.slice(2);
+  const [htmlTemplateString, feedsJsonString] = args;
 
-  let feeds_json = await fs.promises.readFile('config/feeds.json', 'utf-8');
-  let config: Config = JSON.parse(fs.readFileSync('config/configs.json', 'utf-8'))
+  if (!htmlTemplateString || !feedsJsonString || args.length != 2) {
+    console.error('Usage: npm run build {template} {feed_json}');
+    process.exit(1);
+  }
 
+  let feeds_json;
+  try {
+    feeds_json = JSON.parse(feedsJsonString);
+  } catch (error) {
+    console.error('Invalid JSON provided for feeds.');
+    process.exit(1);
+  }
+
+  let config: Config = JSON.parse(await fs.promises.readFile('config/configs.json', 'utf-8'));
   const parser = new Parser();
 
-  const urlsByCategory: { [key: string]: string[] } = JSON.parse(feeds_json);
+  const urlsByCategory: { [key: string]: string[]} = feeds_json;
   const allFeeds: Promise<Feed[] | null>[] = 
     Object.entries(urlsByCategory).map(async ([category, urls]: [string, string[]]) => {
       const feeds: Promise<Feed | null>[] = urls.map(async (url: string) => {
@@ -75,24 +91,16 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
 
   const resolvedFeeds: (Feed | null)[] = (await Promise.all(allFeeds)).flat();
   const filteredFeeds = resolvedFeeds.filter(feed => feed !== null) as Feed[];
-  const latestPosts = orderPosts(filteredFeeds)
 
+  const latestPosts = orderPosts(filteredFeeds)
   const feedsByCategory: Map<string, Feed[]> = filteredFeeds.reduce((map, feed) => {
     const categoryFeeds = map.get(feed.category) || [];
     map.set(feed.category, [...categoryFeeds, feed]);
     return map;
   }, new Map<string, Feed[]>());
 
-  const template1 = fs.readFileSync('config/latest-template.html', 'utf-8');
-  const renderedTemplate1 = nunjucks.renderString(template1, { items: latestPosts });
-  fs.writeFileSync('public/index.html', renderedTemplate1);
-
-  const template2 = fs.readFileSync('config/feeds-template.html', 'utf-8');
-  const renderedTemplate2 = nunjucks.renderString(template2, { items: feedsByCategory });
-  fs.writeFileSync('public/feeds.html', renderedTemplate2);
-
-  console.log()
-  console.timeEnd('build time');
+  const renderedTemplate = nunjucks.renderString(htmlTemplateString, { items: { latestPosts, feedsByCategory } });
+  console.log(renderedTemplate);
 
   process.exit()
 })();
