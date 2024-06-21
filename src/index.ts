@@ -24,11 +24,6 @@ type Feed = {
   category: string
 }
 
-type ResultData = {
-  latestPosts: FeedItem[],
-  feedsByCategory: Map<string, Feed[]>
-}
-
 const mapToFeedItems = (input: any, dateFormat: string): FeedItem[] => {
   return input.items.map((item: any) => {
     const pubDate = item.isoDate || item.pubDate;
@@ -48,6 +43,14 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
   return allItems.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 }
 
+/* todo: 
+ * - [x] output on buffer instead of file
+ * - [x] latest-min-template
+ * - [x] feeds-min-template
+ * - [ ] latest-full-template
+ * - [ ] feeds-full-template
+ * - [ ] update readme
+ */
 (async () => {
   const args = process.argv.slice(2);
   const [htmlTemplateString, feedsJsonString] = args;

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Latest posts</title>
+    <title>latest posts</title>
   </head>
   <body>
     <nav>
@@ -14,10 +14,10 @@
         </ul>
       </div>
     </nav>
-    <h1>Latest Posts</h1>
+    <h1>latest posts</h1>
     <div>
       <ul>
-        {% for item in items %}
+        {% for item in items.latestPosts %}
         <li>
           <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
           <p>{{ item.link }}</p>
