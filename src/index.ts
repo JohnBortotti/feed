@@ -43,20 +43,12 @@ const orderPosts = (input: Feed[]): FeedItem[] => {
   return allItems.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 }
 
-/* todo: 
- * - [x] output on buffer instead of file
- * - [x] latest-min-template
- * - [x] feeds-min-template
- * - [ ] latest-full-template
- * - [ ] feeds-full-template
- * - [ ] update readme
- */
 (async () => {
   const args = process.argv.slice(2);
   const [htmlTemplateString, feedsJsonString] = args;
 
   if (!htmlTemplateString || !feedsJsonString || args.length != 2) {
-    console.error('Usage: npm run build {template} {feed_json}');
+    console.error('Usage: npm run build {template_string} {feed_json_string}');
     process.exit(1);
   }
 
